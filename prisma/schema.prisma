@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model VideoProgress {
+  id        String   @id @default(cuid())
+  videoId   String
+  userId    String
+  progress  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("video_progress")
+}
+model Enrollment {
+  id        String   @id @default(cuid())
+  videoId   String
+  userId    String
+  status    String   @default("ENROLLED") // ENROLLED, COMPLETED, DROPPED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("enrollments")
+  @@unique([userId, videoId])
+}
